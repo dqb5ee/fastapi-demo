@@ -23,3 +23,7 @@ def multiply(c: int, d: int):
 @app.get("/square/{a}")
 def square(a: int):
     return {"square": a * a}
+
+@app.get("/new-endpoint")
+async def new_endpoint():
+    return {"message": "New endpoint is here hello"}
