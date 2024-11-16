@@ -3,7 +3,6 @@ import mysql.connector
 from fastapi import FastAPI
 
 app = FastAPI()
-
 from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
