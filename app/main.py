@@ -29,10 +29,6 @@ try:
 except mysql.connector.Error as err:
     print(f"Error: {err}")
 
-@app.get("/")
-async def read_root():
-    return {"message": "Hello World"}
-
 @app.get("/db-test")
 async def db_test():   
     # Example query to test DB connection
@@ -82,3 +78,4 @@ def get_songs():
         return json_data
     except mysql.connector.Error as e:
         return {"Error": "MySQL Error: " + str(e)}
+
