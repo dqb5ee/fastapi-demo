@@ -1,3 +1,5 @@
+import mysql.connector
+from mysql.connector import Error
 uvicorn
 fastapi[standard]
 typing
@@ -5,3 +7,4 @@ pydantic
 # pymongo
 # dnspython
 # mysqlclient
+mysql-connector-python
