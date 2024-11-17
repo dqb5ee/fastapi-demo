@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+from mysql.connector import Error
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -14,14 +15,14 @@ app.add_middleware(
 DBHOST = "ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com"
 DBUSER = "admin"
 DBPASS = os.getenv('DBPASS')
-DBNAME = "dqb5ee"
+DB = "dqb5ee"
 
 try:
     db = mysql.connector.connect(
         user=DBUSER,
         host=DBHOST,
         password=DBPASS,
-        database=DBNAME
+        database=DB
     )
     cur = db.cursor()
     print("Database connection successful")
