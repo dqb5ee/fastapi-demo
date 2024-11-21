@@ -18,34 +18,10 @@ DBUSER = "admin"
 DBPASS = os.getenv('DBPASS')
 DB = "dqb5ee"
 
-try:
-    db = mysql.connector.connect(
-        user=DBUSER,
-        host=DBHOST,
-        password=DBPASS,
-        database=DB
-    )
-    cur = db.cursor()
-    print("Database connection successful")
-except mysql.connector.Error as err:
-    print(f"Error: {err}")
-
-@app.get("/")
-async def read_root():
-    return {"hello": "world"}
-
-@app.get("/db-test")
-async def db_test():   
-    # Example query to test DB connection
-    try:
-        cur.execute("SELECT * FROM some_table LIMIT 1")  # Replace with a valid query
-        result = cur.fetchone()
-        return {"db_result": result}
-    except mysql.connector.Error as err:
-        return {"error": f"Database error: {err}"}
-
 @app.get('/genres')
 def get_genres():
+    db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
+    cur=db.cursor()
     query = "SELECT * FROM genres ORDER BY genreid;"
     try:    
         cur.execute(query)
@@ -57,10 +33,14 @@ def get_genres():
         return(json_data)
     except Error as e:
         return {"Error": "MySQL Error: " + str(e)}
-
+    finally:
+        cur.close()
+        db.close()
 
 @app.route('/songs', methods=['GET'])
 def get_songs():
+    db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
+    cur=db.cursor()
     query = """
         SELECT
             songs.title,
@@ -78,7 +58,6 @@ def get_songs():
         cur.execute(query)
         results = cur.fetchall()
 
-        # Add the full S3 URL to the file and image fields
         songs = [
             {
                 "title": row[0],
@@ -94,6 +73,10 @@ def get_songs():
 
         # Return the songs as a JSON response
         return json.dumps(songs)
-    except mysql.connector.Error as e:
+    except Error as e:
+        cur.close()
+        db.close()
         return {"Error": "MySQL Error: " + str(e)}
-
+    finally: 
+        cur.close()
+        db.close()
