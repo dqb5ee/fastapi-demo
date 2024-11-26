@@ -48,6 +48,7 @@ async def get_genres():
         cur.close()
         db.close()
 
+
 @app.get('/songs')
 async def get_genres():
     db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB, ssl_disabled=True)
